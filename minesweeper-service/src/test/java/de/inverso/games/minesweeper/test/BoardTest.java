@@ -3,10 +3,6 @@ package de.inverso.games.minesweeper.test;
 import de.inverso.games.minesweeper.modelObjects.Board;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {

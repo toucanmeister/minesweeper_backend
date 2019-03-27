@@ -12,21 +12,24 @@ class Response {
     private int[] numOfNeighborMines;
     private int[] clickedCells;
     private int[] mines;
+    private boolean okay;
 
-    public Response(Player player, Board board, List<Integer> clickedCells) {
+    public Response(Player player, Board board, List<Integer> clickedCells, boolean okay) {
         setClickedCells(clickedCells);
         setNumOfNeighborMines(board);
         setAlive(player.isAlive());
         setWinner(player.isWinner());
+        setStatus(okay);
 
         if(!player.isAlive()){
             setMinesFromBoard(board);
         }
     }
 
-    public Response(Player player) {
+    public Response(Player player, boolean status) {
         setWinner(player.isWinner());
         setAlive(player.isAlive());
+        setStatus(status);
     }
 
     private void setNumOfNeighborMines(Board board) {
@@ -80,5 +83,13 @@ class Response {
 
     public int[] getNumOfNeighborMines() {
         return numOfNeighborMines;
+    }
+
+    public void setStatus(boolean okay) {
+        this.okay = okay;
+    }
+
+    public boolean isOkay(){
+        return this.okay;
     }
 }

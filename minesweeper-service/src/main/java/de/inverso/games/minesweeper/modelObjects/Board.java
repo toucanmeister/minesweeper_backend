@@ -3,7 +3,6 @@ package de.inverso.games.minesweeper.modelObjects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import static java.lang.Math.*;
 
 public class Board {
 
@@ -19,20 +18,16 @@ public class Board {
         initializeCells();
     }
 
-    private void DEVELOPMENT_printTheWholeThing() {
-        int counter = 0;
-        for(Cell cell: cells){
-            System.out.print(cell.isAMine());
-            System.out.print(" ");
-
-            if(counter == numberOfRows-1) {
-                System.out.println();
-                counter = 0;
-            } else {
-                counter++;
-            }
-        }
+    public Board() {
     }
+
+    public void initialize(){
+        System.out.println(getNumberOfRows());
+        System.out.println(getNumberOfMines());
+        this.size = numberOfRows * numberOfRows;
+        initializeCells();
+    }
+
 
     private void initializeCells() {
         cells = new Cell[getSize()];
@@ -96,11 +91,7 @@ public class Board {
     private boolean coordinatesAreOnBoard(int row, int column) {
         if(row < 0 || row > numberOfRows-1){
             return false;
-        } else if(column < 0 || column > numberOfRows-1){
-            return false;
-        } else {
-            return true;
-        }
+        } else return column >= 0 && column <= numberOfRows - 1;
     }
 
     public int[] getCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
@@ -176,26 +167,30 @@ public class Board {
     }
 
     public boolean cellIsAMine(int cellNum) {
-
         return cells[cellNum].isAMine();
     }
 
     public boolean cellIsFlagged(int cellNum) {
-
         return cells[cellNum].isFlagged();
     }
 
     public int getSize() {
-
         return this.size;
     }
 
-    public int getNumberOfMines() {
-
+    public int getNumberOfMines(){
         return numberOfMines;
     }
 
-    public int getNumberOfRows() {
-        return numberOfRows; }
+    public int getNumberOfRows(){
+        return numberOfRows;
+    }
 
+    public void setNumberOfRows(int numberOfRows){
+        this.numberOfRows = numberOfRows;
+    }
+
+    public void setNumberOfMines(int numberOfMines){
+        this.numberOfMines = numberOfMines;
+    }
 }

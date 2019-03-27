@@ -1,5 +1,7 @@
 package de.inverso.games.minesweeper.modelObjects;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +73,7 @@ public class Player {
 
     private void checkIfPlayerWins(){
         if(board.allMinesAreFlagged() && board.allCellsAreClicked()){
+            System.out.println("Winner!");
             winner = true;
         }
     }

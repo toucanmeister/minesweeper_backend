@@ -1,106 +1,91 @@
 package de.inverso.games.minesweeper.controller;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
-import de.inverso.games.minesweeper.modelObjects.Game;
+import de.inverso.games.minesweeper.modelObjects.Player;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Endpoints für Minesweeper-Service.
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/minesweeper-service")
 public class MinesweeperController {
 
+    @Data
     private static class Coordinates{
+
         private int cellNum;
-
-        public void setCellNum(int cellNum) {
-            this.cellNum = cellNum;
-        }
-
-        int getCellNum() {
-            return cellNum;
-        }
     }
 
-    private static class BoardData {
-        private int rowSize;
-        private int numOfMines;
-
-        public int getRowSize() {
-            return rowSize;
-        }
-        public int getNumOfMines() {
-            return numOfMines;
-        }
-    }
-
-    private Game minesweeper;
-
+    Player player;
+    Board board;
 
     @ResponseBody
-    @RequestMapping(method = POST, value = "/start", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> startMinesweeper(@RequestBody BoardData boardData) {
-        minesweeper = new Game(boardData.getRowSize(), boardData.getNumOfMines());
-        return new ResponseEntity<>(minesweeper.board, HttpStatus.CREATED);
+    @PostMapping(value = "/start", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Board> startMinesweeper(@RequestBody @Valid Board board) {
+        this.board = board;
+        board.initialize();
+        this.player = new Player(board);
+        return new ResponseEntity<>(board, HttpStatus.CREATED);
     }
 
     @ResponseBody
     @RequestMapping(method = POST, value = "/click", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> clickAndSendResult(@RequestBody Coordinates coordinates) {
-        HttpStatus status = tryToClick(coordinates.getCellNum());
+    public ResponseEntity<Response> clickAndSendResult(@RequestBody @Valid Coordinates coordinates) {
+        boolean requestOkay = tryToClick(coordinates.getCellNum());
         Response response;
         List<Integer> clickedCells;
 
-        if(status == HttpStatus.OK) {
-            clickedCells = minesweeper.player.clickOnCell(coordinates.getCellNum());
-            response = new Response(minesweeper.player, minesweeper.board, clickedCells);
+        if(requestOkay) {
+            clickedCells = player.clickOnCell(coordinates.getCellNum());
+            response = new Response(player, board, clickedCells, requestOkay);
         } else {
-            response = new Response(minesweeper.player);
+            response = new Response(player, requestOkay);
         }
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ResponseBody
     @RequestMapping(method = POST, value = "/flagChange", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> flagCell(@RequestBody Coordinates coordinates) {
-        HttpStatus status = tryToFlag(coordinates.getCellNum());
+    public ResponseEntity<Response> flagCell(@RequestBody @Valid Coordinates coordinates) {
+        boolean requestOkay = tryToFlag(coordinates.getCellNum());
         Response response;
 
-        if(status == HttpStatus.OK) {
-            minesweeper.player.flagChange(coordinates.getCellNum());
-            response = new Response(minesweeper.player);
+        if(requestOkay) {
+            player.flagChange(coordinates.getCellNum());
+            response = new Response(player, requestOkay);
         } else {
-            response = new Response(minesweeper.player);
+            response = new Response(player, requestOkay);
         }
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    private HttpStatus tryToClick(int cellNum) {
+    private boolean tryToClick(int cellNum) {
         try {
-            minesweeper.board.checkCellRange(cellNum);
-            return HttpStatus.OK;
+            board.checkCellRange(cellNum);
+            return true;
         } catch (IndexOutOfBoundsException e) {
-            return HttpStatus.BAD_REQUEST;
+            return false;
         }
     }
 
-    private HttpStatus tryToFlag(int cellNum) {
+    private boolean tryToFlag(int cellNum) {
         try {
-            minesweeper.board.checkCellRange(cellNum);
-            return HttpStatus.OK;
+            board.checkCellRange(cellNum);
+            return true;
         } catch (IndexOutOfBoundsException e) {
-            return HttpStatus.BAD_REQUEST;
+            return false;
         }
     }
 
