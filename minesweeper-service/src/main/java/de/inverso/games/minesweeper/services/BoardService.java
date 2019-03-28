@@ -40,7 +40,7 @@ public class BoardService {
             board.setCellToClicked(cellNum);
             clickedCells.add(cellNum);
 
-            if (board.numOfNeighboringMines(cellNum) == 0) {
+            if (board.getNumOfNeighboringMines(cellNum) == 0) {
                 clickedCells.addAll(repeatForAllNeighbors(board, cellNum));
             }
         }
@@ -75,4 +75,6 @@ public class BoardService {
             board.setPlayerWinner(true);
         }
     }
+
+
 }

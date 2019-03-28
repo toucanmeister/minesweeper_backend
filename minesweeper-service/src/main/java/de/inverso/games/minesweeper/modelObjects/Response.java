@@ -34,7 +34,7 @@ public class Response {
     private void setNumOfNeighborMines(Board board) {
         numOfNeighborMines = new int[clickedCells.length];
         for(int i=0; i < clickedCells.length; i++){
-            numOfNeighborMines[i] = board.numOfNeighboringMines(clickedCells[i]);
+            numOfNeighborMines[i] = board.getNumOfNeighboringMines(clickedCells[i]);
         }
     }
 

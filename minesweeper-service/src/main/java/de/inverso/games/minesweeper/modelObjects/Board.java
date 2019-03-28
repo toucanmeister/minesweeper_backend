@@ -59,7 +59,7 @@ public class Board {
         }
     }
 
-    public int numOfNeighboringMines(int cellNum) {
+    public int getNumOfNeighboringMines(int cellNum) {
 
         int mineCounter = 0;
         List<Integer> neighbors = getNeighboringCells(cellNum);
