@@ -12,12 +12,14 @@ public class Player {
     private Board board;
 
     public Player(Board board) {
+
         this.board = board;
         alive = true;
         winner = false;
     }
 
     public List<Integer> clickOnCell(int cellNum) {
+
         if (!board.cellIsFlagged(cellNum)) {
             return clickAndCheckWin(cellNum);
         } else {
@@ -26,19 +28,19 @@ public class Player {
     }
 
     private List<Integer> clickAndCheckWin(int cellNum) {
+
         if (board.cellIsAMine(cellNum)) {
             alive = false;
             return new ArrayList<>();
         } else {
-            List<Integer> clickedCells = new ArrayList<>();
-
-            clickedCells.addAll(recursiveClick(cellNum));
+            List<Integer> clickedCells = new ArrayList<>(recursiveClick(cellNum));
             checkIfPlayerWins();
             return clickedCells;
         }
     }
 
     private List<Integer> recursiveClick(int cellNum) {
+
         List<Integer> clickedCells = new ArrayList<>();
         if( !(board.cellIsClicked(cellNum))) {
             board.setCellToClicked(cellNum);
@@ -52,6 +54,7 @@ public class Player {
     }
 
     private List<Integer> repeatForAllNeighbors(int cellNum) {
+
         List<Integer> neighbors = board.getNeighboringCells(cellNum);
         List<Integer> clickedCells = new ArrayList<>();
 
@@ -62,6 +65,7 @@ public class Player {
     }
 
     public void flagChange(int cellNum){
+
         if(board.cellIsFlagged(cellNum)) {
             board.setFlaggedCellToUnflagged(cellNum);
             checkIfPlayerWins();
@@ -72,8 +76,8 @@ public class Player {
     }
 
     private void checkIfPlayerWins(){
+
         if(board.allMinesAreFlagged() && board.allCellsAreClicked()){
-            System.out.println("Winner!");
             winner = true;
         }
     }
