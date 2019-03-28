@@ -3,6 +3,7 @@ package de.inverso.games.minesweeper.modelObjects;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,7 +42,7 @@ public class Board {
 
     private void instantiateCells() {
         for(int cellNum=0; cellNum < getSize(); cellNum++){
-            cells[cellNum] = new Cell();
+            cells[cellNum] = new Cell(cellNum, createCellCoordinates(cellNum));
         }
     }
 
@@ -52,7 +53,7 @@ public class Board {
             while(!cellWithoutMineFound) {
                 int chosenCell = ThreadLocalRandom.current().nextInt(0, getSize());
                 if( !(cellIsAMine(chosenCell))) {
-                    cells[chosenCell].setAsMine();
+                    cells[chosenCell].setMine(true);
                     cellWithoutMineFound = true;
                 }
             }
@@ -98,7 +99,7 @@ public class Board {
         } else return column >= 0 && column <= numberOfRows - 1;
     }
 
-    public int[] getCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
+    private int[] createCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
         int counter = 0;
         for(int row=0; row < numberOfRows; row++){
             for(int column=0; column < numberOfRows; column++){
@@ -111,15 +112,20 @@ public class Board {
         throw new IndexOutOfBoundsException();
     }
 
+    public int[] getCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
+        for(Cell cell: cells){
+            if(cell.getCellNum() == cellNum){
+                return cell.getCellCoordinates();
+            }
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
     public int getCellByCoordinates(int row, int column) throws IndexOutOfBoundsException{
 
-        int counter = 0;
-        for(int x=0; x < numberOfRows; x++) {
-            for(int y=0; y < numberOfRows; y++) {
-                if(x == row && y == column){
-                    return counter;
-                }
-                counter++;
+        for(int x=0; x < size; x++) {
+            if(Arrays.equals(cells[x].getCellCoordinates(), new int[]{row, column})){
+                return x;
             }
         }
         throw new IndexOutOfBoundsException();
@@ -129,7 +135,7 @@ public class Board {
 
         int flaggedMines = 0;
         for(Cell cell: cells){
-            if(cell.isFlagged() && cell.isAMine()){
+            if(cell.isFlagged() && cell.isMine()){
                     flaggedMines++;
             }
         }
@@ -172,7 +178,7 @@ public class Board {
     }
 
     public boolean cellIsAMine(int cellNum) {
-        return cells[cellNum].isAMine();
+        return cells[cellNum].isMine();
     }
 
     public boolean cellIsFlagged(int cellNum) {
@@ -185,10 +191,6 @@ public class Board {
 
     public int getNumberOfMines(){
         return numberOfMines;
-    }
-
-    public int getNumberOfRows(){
-        return numberOfRows;
     }
 
     public void setNumberOfRows(int numberOfRows){

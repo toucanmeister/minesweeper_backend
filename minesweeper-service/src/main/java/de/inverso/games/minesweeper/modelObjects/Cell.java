@@ -8,8 +8,12 @@ class Cell {
     enum CellStatus {CLICKED, FLAGGED, UNCLICKED}
     private CellStatus status;
     private boolean isMine;
+    private int cellNum;
+    private int[] cellCoordinates;
 
-     Cell() {
+     Cell(int cellNum, int[] cellCoordinates) {
+        this.cellNum = cellNum;
+        this.cellCoordinates = cellCoordinates;
         status = CellStatus.UNCLICKED;
         isMine = false;
     }
@@ -22,10 +26,6 @@ class Cell {
          return status == CellStatus.FLAGGED;
      }
 
-    boolean isAMine() {
-         return isMine;
-    }
-
     void setUnflagged() {
          this.status = CellStatus.UNCLICKED;
     }
@@ -36,9 +36,5 @@ class Cell {
 
     void setFlagged() {
         this.status = CellStatus.FLAGGED;
-    }
-
-    void setAsMine() {
-        this.isMine = true;
     }
 }
