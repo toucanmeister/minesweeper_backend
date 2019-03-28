@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
+import de.inverso.games.minesweeper.modelObjects.RecursiveClicker;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,35 +28,11 @@ public class BoardService {
             board.setPlayerAlive(false);
             return new ArrayList<>();
         } else {
-            List<Integer> clickedCells = new ArrayList<>(recursiveClick(board, cellNum));
+            RecursiveClicker Clicker = new RecursiveClicker(board);
+            List<Integer> clickedCells = new ArrayList<>(Clicker.recursiveClick(cellNum));
             checkIfPlayerWins(board);
             return clickedCells;
         }
-    }
-
-    private List<Integer> recursiveClick(Board board, int cellNum) {
-
-        List<Integer> clickedCells = new ArrayList<>();
-        if( !(board.cellIsClicked(cellNum))) {
-            board.setCellToClicked(cellNum);
-            clickedCells.add(cellNum);
-
-            if (board.getNumOfNeighboringMines(cellNum) == 0) {
-                clickedCells.addAll(repeatForAllNeighbors(board, cellNum));
-            }
-        }
-        return clickedCells;
-    }
-
-    private List<Integer> repeatForAllNeighbors(Board board, int cellNum) {
-
-        List<Integer> neighbors = board.getNeighboringCells(cellNum);
-        List<Integer> clickedCells = new ArrayList<>();
-
-        for(int neighbor: neighbors){
-            clickedCells.addAll(recursiveClick(board, neighbor));
-        }
-        return clickedCells;
     }
 
     public void flagChange(Board board, int cellNum){
