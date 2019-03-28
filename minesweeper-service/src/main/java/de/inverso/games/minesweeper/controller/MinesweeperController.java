@@ -2,7 +2,8 @@ package de.inverso.games.minesweeper.controller;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
 import de.inverso.games.minesweeper.modelObjects.Player;
-import lombok.Data;
+import de.inverso.games.minesweeper.modelObjects.Coordinates;
+import de.inverso.games.minesweeper.modelObjects.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +23,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/minesweeper-service")
 public class MinesweeperController {
 
-    @Data
-    private static class Coordinates{
-
-        private int cellNum;
-    }
-
-    Player player;
-    Board board;
+    private Player player;
+    private Board board;
 
     @ResponseBody
     @PostMapping(value = "/start", produces = APPLICATION_JSON_UTF8_VALUE)

@@ -22,8 +22,6 @@ public class Board {
     }
 
     public void initialize(){
-        System.out.println(getNumberOfRows());
-        System.out.println(getNumberOfMines());
         this.size = numberOfRows * numberOfRows;
         initializeCells();
     }

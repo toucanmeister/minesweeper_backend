@@ -1,11 +1,10 @@
-package de.inverso.games.minesweeper.controller;
+package de.inverso.games.minesweeper.modelObjects;
 
-import de.inverso.games.minesweeper.modelObjects.Board;
-import de.inverso.games.minesweeper.modelObjects.Player;
-
+import lombok.Data;
 import java.util.List;
 
-class Response {
+@Data
+public class Response {
 
     private boolean alive;
     private boolean winner;
@@ -19,7 +18,7 @@ class Response {
         setNumOfNeighborMines(board);
         setAlive(player.isAlive());
         setWinner(player.isWinner());
-        setStatus(okay);
+        setOkay(okay);
 
         if(!player.isAlive()){
             setMinesFromBoard(board);
@@ -29,7 +28,7 @@ class Response {
     public Response(Player player, boolean status) {
         setWinner(player.isWinner());
         setAlive(player.isAlive());
-        setStatus(status);
+        setOkay(status);
     }
 
     private void setNumOfNeighborMines(Board board) {
@@ -55,41 +54,5 @@ class Response {
                 mineNumber++;
             }
         }
-    }
-
-    public int[] getMines(){
-        return mines;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public void setWinner(boolean winner) {
-        this.winner = winner;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public boolean isWinner() {
-        return winner;
-    }
-
-    public int[] getClickedCells() {
-        return clickedCells;
-    }
-
-    public int[] getNumOfNeighborMines() {
-        return numOfNeighborMines;
-    }
-
-    public void setStatus(boolean okay) {
-        this.okay = okay;
-    }
-
-    public boolean isOkay(){
-        return this.okay;
     }
 }
