@@ -1,11 +1,16 @@
 package de.inverso.games.minesweeper.modelObjects;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Data
 public class Board {
 
+    private boolean playerAlive;
+    private boolean playerWinner;
     private int size;
     private int numberOfRows;
     private int numberOfMines;
@@ -13,15 +18,16 @@ public class Board {
 
     public Board(int rowSize, int numOfMines) {
         numberOfRows = rowSize;
-        this.size = numberOfRows * numberOfRows;
         this.numberOfMines = numOfMines;
-        initializeCells();
+        initialize();
     }
 
     public Board() {
     }
 
     public void initialize(){
+        playerAlive = true;
+        playerWinner = false;
         this.size = numberOfRows * numberOfRows;
         initializeCells();
     }
@@ -106,6 +112,7 @@ public class Board {
     }
 
     public int getCellByCoordinates(int row, int column) throws IndexOutOfBoundsException{
+
         int counter = 0;
         for(int x=0; x < numberOfRows; x++) {
             for(int y=0; y < numberOfRows; y++) {
@@ -119,6 +126,7 @@ public class Board {
     }
 
     public boolean allMinesAreFlagged(){
+
         int flaggedMines = 0;
         for(Cell cell: cells){
             if(cell.isFlagged() && cell.isAMine()){
@@ -129,6 +137,7 @@ public class Board {
     }
 
     public boolean allCellsAreClicked(){
+
         int clickedCells = 0;
 
         for(Cell cell: cells){
@@ -140,23 +149,21 @@ public class Board {
     }
 
     public void checkCellRange(int cellNum) throws IndexOutOfBoundsException{
+
         if ((cellNum < 0) || (cellNum >= getSize())){
             throw new IndexOutOfBoundsException("Cell is out of range of the Board.");
         }
     }
 
     public void setCellToClicked(int cellNum) {
-
         cells[cellNum].setClicked();
     }
 
     public void setCellToFlagged(int cellNum) {
-
         cells[cellNum].setFlagged();
     }
 
     public void setFlaggedCellToUnflagged(int cellNum) {
-
         cells[cellNum].setUnflagged();
     }
 

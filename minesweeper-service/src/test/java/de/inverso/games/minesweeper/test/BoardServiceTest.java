@@ -1,41 +1,38 @@
 package de.inverso.games.minesweeper.test;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
-import de.inverso.games.minesweeper.modelObjects.Player;
+import de.inverso.games.minesweeper.services.BoardService;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PlayerTest {
+public class BoardServiceTest {
 
     private Board board;
-    private Player player;
+    private BoardService boardService;
 
     @Test
     public void playerIsAlive(){
         board = new Board(7, 10);
-        player = new Player(board);
 
-
-        assertTrue(player.isAlive());
+        assertTrue(board.isPlayerAlive());
     }
 
     @Test
     public void playerIsNotWinner(){
         board = new Board(7, 10);
-        player = new Player(board);
 
-        assertFalse(player.isWinner());
+        assertFalse(board.isPlayerWinner());
     }
 
     @Test
     public void cellClickMakesCellClickedOrKillsPlayer() {
         board = new Board(7, 10);
-        player = new Player(board);
+        boardService = new BoardService();
 
-        player.clickOnCell(2);
+        boardService.clickOnCell(board, 2);
 
         if (board.cellIsAMine(2)) {
-            assertFalse(player.isAlive());
+            assertFalse(board.isPlayerAlive());
         } else {
             assertTrue(board.cellIsClicked(2));
         }
@@ -44,15 +41,15 @@ public class PlayerTest {
     @Test
     public void playerWinsIfMinesAreFlaggedAndCellsClicked(){
         board = new Board(7, 10);
-        player = new Player(board);
+        boardService = new BoardService();
 
         for(int cellNum=0; cellNum < board.getSize(); cellNum++){
             if(board.cellIsAMine(cellNum)){
-                player.flagChange(cellNum);
+                boardService.flagChange(board, cellNum);
             } else {
-                player.clickOnCell(cellNum);
+                boardService.clickOnCell(board, cellNum);
                 }
         }
-        assertTrue(player.isWinner());
+        assertTrue(board.isPlayerWinner());
     }
 }

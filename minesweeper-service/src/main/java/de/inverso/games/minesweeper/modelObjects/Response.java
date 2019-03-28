@@ -13,21 +13,21 @@ public class Response {
     private int[] mines;
     private boolean okay;
 
-    public Response(Player player, Board board, List<Integer> clickedCells, boolean okay) {
+    public Response(Board board, List<Integer> clickedCells, boolean okay) {
         setClickedCells(clickedCells);
         setNumOfNeighborMines(board);
-        setAlive(player.isAlive());
-        setWinner(player.isWinner());
+        setAlive(board.isPlayerAlive());
+        setWinner(board.isPlayerWinner());
         setOkay(okay);
 
-        if(!player.isAlive()){
+        if(!board.isPlayerAlive()){
             setMinesFromBoard(board);
         }
     }
 
-    public Response(Player player, boolean status) {
-        setWinner(player.isWinner());
-        setAlive(player.isAlive());
+    public Response(Board board, boolean status) {
+        setWinner(board.isPlayerWinner());
+        setAlive(board.isPlayerAlive());
         setOkay(status);
     }
 

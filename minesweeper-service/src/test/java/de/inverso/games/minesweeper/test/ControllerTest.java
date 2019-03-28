@@ -1,6 +1,7 @@
 package de.inverso.games.minesweeper.test;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
+import de.inverso.games.minesweeper.services.BoardService;
 import de.inverso.games.minesweeper.controller.MinesweeperController;
 import de.inverso.games.minesweeper.modelObjects.Coordinates;
 import de.inverso.games.minesweeper.modelObjects.Response;
@@ -16,7 +17,7 @@ public class ControllerTest {
         board.setNumberOfRows(8);
         board.setNumberOfMines(10);
 
-        MinesweeperController controller = new MinesweeperController();
+        MinesweeperController controller = new MinesweeperController(new BoardService());
 
         controller.startMinesweeper(board);
 
@@ -29,7 +30,7 @@ public class ControllerTest {
         }
 
         try {
-            c.getDeclaredField("player");
+            c.getDeclaredField("boardService");
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +42,7 @@ public class ControllerTest {
         board.setNumberOfRows(8);
         board.setNumberOfMines(10);
 
-        MinesweeperController controller = new MinesweeperController();
+        MinesweeperController controller = new MinesweeperController(new BoardService());
         controller.startMinesweeper(board);
 
         Coordinates targetCell = new Coordinates();
@@ -63,7 +64,7 @@ public class ControllerTest {
         board.setNumberOfRows(8);
         board.setNumberOfMines(10);
 
-        MinesweeperController controller = new MinesweeperController();
+        MinesweeperController controller = new MinesweeperController(new BoardService());
         controller.startMinesweeper(board);
 
         Coordinates targetCell = new Coordinates();

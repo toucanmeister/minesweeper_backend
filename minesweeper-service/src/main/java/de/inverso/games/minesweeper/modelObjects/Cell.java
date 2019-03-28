@@ -1,5 +1,8 @@
 package de.inverso.games.minesweeper.modelObjects;
 
+import lombok.Data;
+
+@Data
 class Cell {
 
     enum CellStatus {CLICKED, FLAGGED, UNCLICKED}
@@ -24,7 +27,7 @@ class Cell {
     }
 
     void setUnflagged() {
-        this.status = CellStatus.UNCLICKED;
+         this.status = CellStatus.UNCLICKED;
     }
 
     void setClicked() {

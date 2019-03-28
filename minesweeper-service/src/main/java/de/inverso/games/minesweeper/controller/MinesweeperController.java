@@ -1,9 +1,9 @@
 package de.inverso.games.minesweeper.controller;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
-import de.inverso.games.minesweeper.modelObjects.Player;
 import de.inverso.games.minesweeper.modelObjects.Coordinates;
 import de.inverso.games.minesweeper.modelObjects.Response;
+import de.inverso.games.minesweeper.services.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,15 +23,18 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/minesweeper-service")
 public class MinesweeperController {
 
-    private Player player;
+    private BoardService boardService;
     private Board board;
+
+    public MinesweeperController(BoardService boardService){
+        this.boardService = boardService;
+    }
 
     @ResponseBody
     @PostMapping(value = "/start", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Board> startMinesweeper(@RequestBody @Valid Board board) {
         this.board = board;
         board.initialize();
-        this.player = new Player(board);
         return new ResponseEntity<>(board, HttpStatus.CREATED);
     }
 
@@ -43,10 +46,10 @@ public class MinesweeperController {
         List<Integer> clickedCells;
 
         if(requestOkay) {
-            clickedCells = player.clickOnCell(coordinates.getCellNum());
-            response = new Response(player, board, clickedCells, requestOkay);
+            clickedCells = boardService.clickOnCell(board, coordinates.getCellNum());
+            response = new Response(board, clickedCells, requestOkay);
         } else {
-            response = new Response(player, requestOkay);
+            response = new Response(board, requestOkay);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -58,10 +61,10 @@ public class MinesweeperController {
         Response response;
 
         if(requestOkay) {
-            player.flagChange(coordinates.getCellNum());
-            response = new Response(player, requestOkay);
+            boardService.flagChange(board, coordinates.getCellNum());
+            response = new Response(board, requestOkay);
         } else {
-            response = new Response(player, requestOkay);
+            response = new Response(board, requestOkay);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
