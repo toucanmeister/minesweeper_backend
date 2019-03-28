@@ -27,26 +27,33 @@ public class Board {
     }
 
     public void initialize(){
+
         playerAlive = true;
         playerWinner = false;
-        this.size = numberOfRows * numberOfRows;
+        size = numberOfRows * numberOfRows;
         initializeCells();
     }
 
 
     private void initializeCells() {
+
         cells = new Cell[getSize()];
         instantiateCells();
         placeMinesRandomly();
     }
 
     private void instantiateCells() {
+
         for(int cellNum=0; cellNum < getSize(); cellNum++){
             cells[cellNum] = new Cell(cellNum, createCellCoordinates(cellNum));
+        }
+        for(int cellNum = 0; cellNum < getSize(); cellNum++) {
+            cells[cellNum].addNeighbors(createNeighboringCellsList(cellNum));
         }
     }
 
     private void placeMinesRandomly() {
+
         boolean cellWithoutMineFound;
         for(int i=0; i < numberOfMines; i++) {
             cellWithoutMineFound = false;
@@ -74,7 +81,8 @@ public class Board {
         return mineCounter;
     }
 
-    public List<Integer> getNeighboringCells(int cellNum) {
+    private List<Integer> createNeighboringCellsList(int cellNum) {
+
         int[] originCoordinates = getCellCoordinates(cellNum);
         int originRow = originCoordinates[0];
         int originColumn = originCoordinates[1];
@@ -93,13 +101,19 @@ public class Board {
         return neighbors;
     }
 
+    public List<Integer> getNeighboringCells(int cellNum) {
+        return cells[cellNum].getNeighbors();
+    }
+
     private boolean coordinatesAreOnBoard(int row, int column) {
+
         if(row < 0 || row > numberOfRows-1){
             return false;
         } else return column >= 0 && column <= numberOfRows - 1;
     }
 
     private int[] createCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
+
         int counter = 0;
         for(int row=0; row < numberOfRows; row++){
             for(int column=0; column < numberOfRows; column++){
@@ -112,13 +126,8 @@ public class Board {
         throw new IndexOutOfBoundsException();
     }
 
-    public int[] getCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
-        for(Cell cell: cells){
-            if(cell.getCellNum() == cellNum){
-                return cell.getCellCoordinates();
-            }
-        }
-        throw new IndexOutOfBoundsException();
+    public int[] getCellCoordinates(int cellNum){
+        return cells[cellNum].getCellCoordinates();
     }
 
     public int getCellByCoordinates(int row, int column) throws IndexOutOfBoundsException{
@@ -145,7 +154,6 @@ public class Board {
     public boolean allCellsAreClicked(){
 
         int clickedCells = 0;
-
         for(Cell cell: cells){
             if(cell.isClicked()){
                 clickedCells++;

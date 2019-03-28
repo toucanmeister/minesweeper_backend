@@ -2,6 +2,8 @@ package de.inverso.games.minesweeper.modelObjects;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 class Cell {
 
@@ -10,12 +12,17 @@ class Cell {
     private boolean isMine;
     private int cellNum;
     private int[] cellCoordinates;
+    private List<Integer> neighbors;
 
      Cell(int cellNum, int[] cellCoordinates) {
         this.cellNum = cellNum;
         this.cellCoordinates = cellCoordinates;
         status = CellStatus.UNCLICKED;
         isMine = false;
+    }
+
+    void addNeighbors(List <Integer> neighbors){
+         this.neighbors = neighbors;
     }
 
     boolean isClicked() {
