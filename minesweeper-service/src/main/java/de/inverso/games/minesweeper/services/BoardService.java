@@ -29,9 +29,9 @@ public class BoardService {
             return new ArrayList<>();
         } else {
             RecursiveClicker Clicker = new RecursiveClicker(board);
-            List<Integer> clickedCells = new ArrayList<>(Clicker.recursiveClick(cellNum));
+            Clicker.recursiveClick(cellNum);
             checkIfPlayerWins(board);
-            return clickedCells;
+            return board.getClickedCells();
         }
     }
 

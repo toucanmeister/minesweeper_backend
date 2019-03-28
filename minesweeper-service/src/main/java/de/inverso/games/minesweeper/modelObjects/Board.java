@@ -112,6 +112,7 @@ public class Board {
         } else return column >= 0 && column <= numberOfRows - 1;
     }
 
+
     private int[] createCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
 
         int counter = 0;
@@ -167,6 +168,16 @@ public class Board {
         if ((cellNum < 0) || (cellNum >= getSize())){
             throw new IndexOutOfBoundsException("Cell is out of range of the Board.");
         }
+    }
+
+    public List<Integer> getClickedCells(){
+        List<Integer> clickedCells = new ArrayList<>();
+        for(Cell cell: cells){
+            if(cell.isClicked()){
+                clickedCells.add(cell.getCellNum());
+            }
+        }
+        return clickedCells;
     }
 
     public void setCellToClicked(int cellNum) {
