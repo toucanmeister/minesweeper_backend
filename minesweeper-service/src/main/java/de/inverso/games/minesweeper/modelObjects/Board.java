@@ -67,7 +67,7 @@ public class Board {
         }
     }
 
-    public int getNumOfNeighboringMines(int cellNum) {
+    int getNumOfNeighboringMines(int cellNum) {
 
         int mineCounter = 0;
         List<Integer> neighbors = getNeighboringCells(cellNum);
@@ -180,7 +180,7 @@ public class Board {
         return clickedCells;
     }
 
-    public void setCellToClicked(int cellNum) {
+    void setCellToClicked(int cellNum) {
         cells[cellNum].setClicked();
     }
 
