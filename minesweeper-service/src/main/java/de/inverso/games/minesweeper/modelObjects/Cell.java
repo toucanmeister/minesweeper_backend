@@ -13,15 +13,15 @@ public class Cell {
     private int[] cellCoordinates;
     private List<Cell> neighbors;
 
-     Cell(int cellNum, int[] cellCoordinates) {
+    Cell(int cellNum, int[] cellCoordinates) {
         this.cellNum = cellNum;
         this.cellCoordinates = cellCoordinates;
         status = CellStatus.UNCLICKED;
         isMine = false;
     }
 
-    void addNeighbors(List<Cell> neighbors){
-         this.neighbors = neighbors;
+    void addNeighbors(List<Cell> neighbors) {
+        this.neighbors = neighbors;
     }
 
     boolean isClicked() {
@@ -29,11 +29,11 @@ public class Cell {
     }
 
     boolean isFlagged() {
-         return status == CellStatus.FLAGGED;
-     }
+        return status == CellStatus.FLAGGED;
+    }
 
     void setUnflagged() {
-         this.status = CellStatus.UNCLICKED;
+        this.status = CellStatus.UNCLICKED;
     }
 
     void setClicked() {

@@ -2,12 +2,11 @@ package de.inverso.games.minesweeper.test;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
 import de.inverso.games.minesweeper.modelObjects.Cell;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore
 public class BoardTest {
 
     private Board board;

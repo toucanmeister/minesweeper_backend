@@ -82,6 +82,12 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.19</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -111,8 +117,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <sourceDirectories>${project.build.sourceDirectory},${project.build.testSourceDirectory}
-                    </sourceDirectories>
+                    <sourceDirectories>${project.build.sourceDirectory}</sourceDirectories>
                     <configLocation>.config/checkStyle/Checkstyle.xml</configLocation>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <failOnViolation>true</failOnViolation>

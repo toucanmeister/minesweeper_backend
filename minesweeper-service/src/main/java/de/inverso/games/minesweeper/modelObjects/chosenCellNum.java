@@ -3,7 +3,7 @@ package de.inverso.games.minesweeper.modelObjects;
 import lombok.Data;
 
 @Data
-public class Coordinates {
+public class chosenCellNum {
 
     private int cellNum;
 }

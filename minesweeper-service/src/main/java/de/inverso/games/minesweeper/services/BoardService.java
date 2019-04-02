@@ -14,6 +14,12 @@ public class BoardService {
     public BoardService(){
     }
 
+    /**
+     * Klickt auf die gewählte Zelle und führt rekursiven Klick aus.
+     * @param board Board, auf dem gespielt wird.
+     * @param cell Zelle, die geklickt werden soll.
+     * @return Alle geklickten Zellen.
+     */
     public List<Integer> clickOnCell(Board board, Cell cell) {
 
         if (!board.cellIsFlagged(cell)) {
@@ -29,16 +35,21 @@ public class BoardService {
             board.setPlayerAlive(false);
             return new ArrayList<>();
         } else {
-            RecursiveClicker Clicker = new RecursiveClicker(board);
-            Clicker.recursiveClick(cell);
+            RecursiveClicker clicker = new RecursiveClicker(board);
+            clicker.recursiveClick(cell);
             checkIfPlayerWins(board);
             return board.getClickedCells();
         }
     }
 
-    public void flagChange(Board board, Cell cell){
+    /**
+     * Flagt die gewählte Zelle.
+     * @param board Board, auf dem gespielt wird.
+     * @param cell Zelle, die geflagt werden soll.
+     */
+    public void flagChange(Board board, Cell cell) {
 
-        if(board.cellIsFlagged(cell)) {
+        if (board.cellIsFlagged(cell)) {
             board.setFlaggedCellToUnflagged(cell);
             checkIfPlayerWins(board);
         } else {
@@ -47,9 +58,9 @@ public class BoardService {
         }
     }
 
-    private void checkIfPlayerWins(Board board){
+    private void checkIfPlayerWins(Board board) {
 
-        if(board.allMinesAreFlagged() && board.allCellsAreClicked()){
+        if (board.allMinesAreFlagged() && board.allCellsAreClicked()) {
             board.setPlayerWinner(true);
         }
     }

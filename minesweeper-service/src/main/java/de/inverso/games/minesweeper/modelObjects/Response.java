@@ -12,6 +12,14 @@ public class Response {
     private int[] mines;
     private boolean okay;
 
+    /**
+     * Wird beim Klick verwendet.
+     * Erstellt eine Response mit den gegebenen Daten, dass vom
+     * Frontend ausgewertet werden kann.
+     * @param board Komplettes Board
+     * @param clickedCells Alle geklickten Zellen
+     * @param okay Ob die Request erfolgreich abgearbeitet wurde.
+     */
     public Response(Board board, List<Integer> clickedCells, boolean okay) {
         setClickedCells(clickedCells);
         setNumOfNeighborMines(board);
@@ -19,36 +27,43 @@ public class Response {
         setWinner(board.isPlayerWinner());
         setOkay(okay);
 
-        if(!board.isPlayerAlive()){
+        if (!board.isPlayerAlive()) {
             setMinesFromBoard(board);
         }
     }
 
-    public Response(Board board, boolean status) {
+    /**
+     * Wird beim Flag verwendet.
+     * Erstellt eine Response mit den gegebenen Daten, dass vom
+     * Frontend ausgewertet werden kann.
+     * @param board Komplettes Board
+     * @param okay Ob die Request erfolgreich abgearbeitet wurde.
+     */
+    public Response(Board board, boolean okay) {
         setWinner(board.isPlayerWinner());
         setAlive(board.isPlayerAlive());
-        setOkay(status);
+        setOkay(okay);
     }
 
     private void setNumOfNeighborMines(Board board) {
 
-        for(int i = 0; i < clickedCellsWithMineCount[1].length; i++){
+        for (int i = 0; i < clickedCellsWithMineCount[1].length; i++) {
             clickedCellsWithMineCount[1][i] = board.getNumOfNeighboringMines(board.getCellByNum(clickedCellsWithMineCount[0][i]));
         }
     }
 
     private void setClickedCells(List<Integer> clickedCells) {
         this.clickedCellsWithMineCount = new int[2][clickedCells.size()];
-        for(int i=0; i < clickedCells.size(); i++){
-            this.clickedCellsWithMineCount[0][i]=clickedCells.get(i);
+        for (int i = 0; i < clickedCells.size(); i++) {
+            this.clickedCellsWithMineCount[0][i] = clickedCells.get(i);
         }
     }
 
-    private void setMinesFromBoard(Board board){
+    private void setMinesFromBoard(Board board) {
         mines = new int[board.getNumberOfMines()];
         int mineNumber = 0;
-        for(int cellNum=0; cellNum < board.getSize(); cellNum++){
-            if(board.cellIsAMine(board.getCellByNum(cellNum))){
+        for (int cellNum = 0; cellNum < board.getSize(); cellNum++) {
+            if (board.cellIsAMine(board.getCellByNum(cellNum))) {
                 mines[mineNumber] = cellNum;
                 mineNumber++;
             }

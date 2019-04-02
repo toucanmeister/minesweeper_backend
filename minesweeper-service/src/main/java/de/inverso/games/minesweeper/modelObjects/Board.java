@@ -17,6 +17,12 @@ public class Board {
     private int numberOfMines;
     private Cell[] cells;
 
+    /**
+     * Initialisiert das gesamte Board.
+     *
+     * @param rowSize Anzahl der Zellen pro Seite
+     * @param numOfMines Anzahl der Minen
+     */
     public Board(int rowSize, int numOfMines) {
         numberOfRows = rowSize;
         this.numberOfMines = numOfMines;
@@ -26,7 +32,10 @@ public class Board {
     public Board() {
     }
 
-    public void initialize(){
+    /**
+     * Erstellt und initialisiert Cells, platziert Minen.
+     */
+    public void initialize() {
 
         playerAlive = true;
         playerWinner = false;
@@ -44,10 +53,10 @@ public class Board {
 
     private void instantiateCells() {
 
-        for(int cellNum=0; cellNum < getSize(); cellNum++){
+        for (int cellNum = 0; cellNum < getSize(); cellNum++) {
             cells[cellNum] = new Cell(cellNum, createCellCoordinates(cellNum));
         }
-        for(Cell cell :cells) {
+        for (Cell cell :cells) {
             cell.addNeighbors(createNeighboringCellsList(cell));
         }
     }
@@ -55,11 +64,11 @@ public class Board {
     private void placeMinesRandomly() {
 
         boolean cellWithoutMineFound;
-        for(int i=0; i < numberOfMines; i++) {
+        for (int i = 0; i < numberOfMines; i++) {
             cellWithoutMineFound = false;
-            while(!cellWithoutMineFound) {
+            while (!cellWithoutMineFound) {
                 int chosenCell = ThreadLocalRandom.current().nextInt(0, getSize());
-                if( !(cellIsAMine(getCellByNum(chosenCell)))) {
+                if (!(cellIsAMine(getCellByNum(chosenCell)))) {
                     cells[chosenCell].setMine(true);
                     cellWithoutMineFound = true;
                 }
@@ -72,8 +81,8 @@ public class Board {
         int mineCounter = 0;
         List<Cell> neighbors = getNeighboringCells(cell);
 
-        for(Cell neighbor: neighbors){
-            if(neighbor.isMine()) {
+        for (Cell neighbor: neighbors) {
+            if (neighbor.isMine()) {
                 mineCounter++;
             }
         }
@@ -88,10 +97,11 @@ public class Board {
         int originColumn = originCoordinates[1];
         List<Cell> neighbors = new ArrayList<>();
 
+        // go through all adjacent cells (includes cells that aren't even on the board)
         for (int row = originRow - 1; row <= originRow + 1; row++) {
             for (int column = originColumn - 1; column <= originColumn + 1; column++) {
 
-                // do not take self
+                // ignore self
                 if (row == originRow && column == originColumn) {
                     continue;
                 }
@@ -110,18 +120,20 @@ public class Board {
 
     private boolean coordinatesAreOnBoard(int row, int column) {
 
-        if(row < 0 || row > numberOfRows-1){
+        if (row < 0 || row > numberOfRows - 1) {
             return false;
-        } else return column >= 0 && column <= numberOfRows - 1;
+        } else {
+            return column >= 0 && column <= numberOfRows - 1;
+        }
     }
 
 
     private int[] createCellCoordinates(int cellNum) throws IndexOutOfBoundsException {
 
         int counter = 0;
-        for(int row=0; row < numberOfRows; row++){
-            for(int column=0; column < numberOfRows; column++){
-                if(counter == cellNum){
+        for (int row = 0; row < numberOfRows; row++) {
+            for (int column = 0; column < numberOfRows; column++) {
+                if (counter == cellNum) {
                     return new int[]{row, column};
                 }
                 counter++;
@@ -130,46 +142,70 @@ public class Board {
         throw new IndexOutOfBoundsException();
     }
 
-    public int[] getCellCoordinates(int cellNum){
+    /**
+     * Gibt Koordinaten der Zelle als int[2] zurück.
+     * @param cellNum Zelle
+     * @return int[2] = {Zeile, Spalte}
+     */
+    public int[] getCellCoordinates(int cellNum) {
         return cells[cellNum].getCellCoordinates();
     }
 
-    public Cell getCellByCoordinates(int row, int column) throws IndexOutOfBoundsException{
+    /**
+     * Gibt Zelle anhand von xy-Koordinaten zurück.
+     * @param row Zeile
+     * @param column Spalte
+     * @return Gefundene Zelle
+     * @throws IndexOutOfBoundsException Wenn nichts gefunden wurde
+     */
+    public Cell getCellByCoordinates(int row, int column) throws IndexOutOfBoundsException {
 
-        for(Cell cell : cells) {
-            if(Arrays.equals(cell.getCellCoordinates(), new int[]{row, column})){
+        for (Cell cell : cells) {
+            if (Arrays.equals(cell.getCellCoordinates(), new int[]{row, column})) {
                 return cell;
             }
         }
         throw new IndexOutOfBoundsException();
     }
 
-    public boolean allMinesAreFlagged(){
+    /**
+     * Fragt ab, ob alle Minen geflaggt sind.
+     * @return true = ja, false = nein.
+     */
+    public boolean allMinesAreFlagged() {
 
         int flaggedMines = 0;
-        for(Cell cell: cells){
-            if(cell.isFlagged() && cell.isMine()){
-                    flaggedMines++;
+        for (Cell cell: cells) {
+            if (cell.isFlagged() && cell.isMine()) {
+                flaggedMines++;
             }
         }
         return flaggedMines == numberOfMines;
     }
 
-    public boolean allCellsAreClicked(){
+    /**
+     * Fragt ab, ob alle Zellen geklickt sind.
+     * @return true = ja, false = nein.
+     */
+    public boolean allCellsAreClicked() {
 
         int clickedCells = 0;
-        for(Cell cell: cells){
-            if(cell.isClicked()){
+        for (Cell cell: cells) {
+            if (cell.isClicked()) {
                 clickedCells++;
             }
         }
         return clickedCells == size - numberOfMines;
     }
 
-    public List<Integer> getClickedCells(){
+    /**
+     * Gibt Nummern alle je geklickten Zellen zurück.
+     * @return Liste mit Nummern der Zellen.
+     */
+    public List<Integer> getClickedCells() {
         List<Integer> clickedCells = new ArrayList<>();
-        for(Cell cell: cells){
-            if(cell.isClicked()){
+        for (Cell cell: cells) {
+            if (cell.isClicked()) {
                 clickedCells.add(cell.getCellNum());
             }
         }
@@ -204,20 +240,25 @@ public class Board {
         return this.size;
     }
 
-    public int getNumberOfMines(){
+    public int getNumberOfMines() {
         return numberOfMines;
     }
 
-    public void setNumberOfRows(int numberOfRows){
+    public void setNumberOfRows(int numberOfRows) {
         this.numberOfRows = numberOfRows;
     }
 
-    public void setNumberOfMines(int numberOfMines){
+    public void setNumberOfMines(int numberOfMines) {
         this.numberOfMines = numberOfMines;
     }
 
+    /**
+     * Sucht nach Zelle mit bestimmter Nummer und gibt diese zurück.
+     * @param cellNum Nummer der gesuchten Zelle.
+     * @return Gefundenes Zellenobjekt.
+     */
     public Cell getCellByNum(int cellNum) {
-        for(Cell cell : cells) {
+        for (Cell cell : cells) {
             if (cell.getCellNum() == cellNum) {
                 return cell;
             }

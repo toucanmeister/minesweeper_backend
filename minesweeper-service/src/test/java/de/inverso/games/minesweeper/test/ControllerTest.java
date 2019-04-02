@@ -3,14 +3,14 @@ package de.inverso.games.minesweeper.test;
 import de.inverso.games.minesweeper.modelObjects.Board;
 import de.inverso.games.minesweeper.services.BoardService;
 import de.inverso.games.minesweeper.controller.MinesweeperController;
-import de.inverso.games.minesweeper.modelObjects.Coordinates;
+import de.inverso.games.minesweeper.modelObjects.chosenCellNum;
 import de.inverso.games.minesweeper.modelObjects.Response;
-import org.junit.Ignore;
-import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
-@Ignore
+
 public class ControllerTest {
 
     @Test
@@ -47,7 +47,7 @@ public class ControllerTest {
         MinesweeperController controller = new MinesweeperController(new BoardService());
         controller.startMinesweeper(board);
 
-        Coordinates targetCell = new Coordinates();
+        chosenCellNum targetCell = new chosenCellNum();
         targetCell.setCellNum(5);
         ResponseEntity<Response> responseEntity = controller.clickAndSendResult(targetCell);
         Response response = responseEntity.getBody();
