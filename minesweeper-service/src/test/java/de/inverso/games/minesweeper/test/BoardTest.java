@@ -1,6 +1,7 @@
 package de.inverso.games.minesweeper.test;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
+import de.inverso.games.minesweeper.modelObjects.Cell;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -8,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Ignore
 public class BoardTest {
-    /*
 
     private Board board;
 
@@ -18,7 +18,7 @@ public class BoardTest {
         int clickedCells = 0;
 
         for(int cellNum=0; cellNum < board.getSize(); cellNum++){
-            if (board.cellIsClicked(cellNum)){
+            if (board.cellIsClicked(board.getCellByNum(cellNum))){
                     clickedCells++;
             }
         }
@@ -31,7 +31,7 @@ public class BoardTest {
         int minesOnBoard = 0;
 
         for(int cellNum=0; cellNum < board.getSize(); cellNum++){
-            if (board.cellIsAMine(cellNum)){
+            if (board.cellIsAMine(board.getCellByNum(cellNum))){
                     minesOnBoard++;
             }
         }
@@ -42,17 +42,17 @@ public class BoardTest {
     public void flaggingCellMakesItFlagged() {
         board = new Board(8, 10);
 
-        board.setCellToFlagged(44);
-        assertTrue(board.cellIsFlagged(44));
+        board.setCellToFlagged(board.getCellByNum(44));
+        assertTrue(board.cellIsFlagged(board.getCellByNum(44)));
     }
 
     @Test
     public void unflaggingFlaggedCellMakesItUnclicked(){
         board = new Board(8, 10);
 
-        board.setCellToFlagged(33);
-        board.setFlaggedCellToUnflagged(33);
-        assertFalse(board.cellIsFlagged(33));
+        board.setCellToFlagged(board.getCellByNum(33));
+        board.setFlaggedCellToUnflagged(board.getCellByNum(33));
+        assertFalse(board.cellIsFlagged(board.getCellByNum(33)));
     }
 
     @Test
@@ -68,18 +68,26 @@ public class BoardTest {
     public void getCellByCoordinatesCorrect(){
         board = new Board(8, 10);
 
-        assertEquals(0, board.getCellByCoordinates(0,0));
-        assertEquals(63, board.getCellByCoordinates(7,7));
-        assertEquals(42, board.getCellByCoordinates(5, 2));
+        assertEquals(0, board.getCellByCoordinates(0,0).getCellNum());
+        assertEquals(63, board.getCellByCoordinates(7,7).getCellNum());
+        assertEquals(42, board.getCellByCoordinates(5, 2).getCellNum());
     }
 
     @Test
     public void getNeighboringCellsCorrect(){
         board = new Board(8, 10);
 
-        assertArrayEquals(new Integer[]{1, 8, 9}, board.getNeighboringCells(0).toArray(new Integer[0]));
-        assertArrayEquals(new Integer[]{54, 55, 62}, board.getNeighboringCells(63).toArray(new Integer[0]));
-        assertArrayEquals(new Integer[]{27, 28, 29, 35, 37, 43, 44, 45}, board.getNeighboringCells(36).toArray(new Integer[0]));
+        assertArrayEquals(new Integer[]{1, 8, 9}, board.getNeighboringCells(board.getCellByNum(0))
+                .stream()
+                .map(Cell::getCellNum)
+                .toArray());
+        assertArrayEquals(new Integer[]{54, 55, 62}, board.getNeighboringCells(board.getCellByNum(63))
+                .stream()
+                .map(Cell::getCellNum)
+                .toArray());
+        assertArrayEquals(new Integer[]{27, 28, 29, 35, 37, 43, 44, 45}, board.getNeighboringCells(board.getCellByNum(36))
+                .stream()
+                .map(Cell::getCellNum)
+                .toArray());
     }
-    */
 }

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Ignore
 public class BoardServiceTest {
-/*
+
     private Board board;
     private BoardService boardService;
 
@@ -31,12 +31,12 @@ public class BoardServiceTest {
         board = new Board(7, 10);
         boardService = new BoardService();
 
-        boardService.clickOnCell(board, 2);
+        boardService.clickOnCell(board, board.getCellByNum(2));
 
-        if (board.cellIsAMine(2)) {
+        if (board.cellIsAMine(board.getCellByNum(2))) {
             assertFalse(board.isPlayerAlive());
         } else {
-            assertTrue(board.cellIsClicked(2));
+            assertTrue(board.cellIsClicked(board.getCellByNum(2)));
         }
     }
 
@@ -46,13 +46,12 @@ public class BoardServiceTest {
         boardService = new BoardService();
 
         for(int cellNum=0; cellNum < board.getSize(); cellNum++){
-            if(board.cellIsAMine(cellNum)){
-                boardService.flagChange(board, cellNum);
+            if(board.cellIsAMine(board.getCellByNum(cellNum))){
+                boardService.flagChange(board, board.getCellByNum(cellNum));
             } else {
-                boardService.clickOnCell(board, cellNum);
+                boardService.clickOnCell(board, board.getCellByNum(cellNum));
             }
         }
         assertTrue(board.isPlayerWinner());
     }
-    */
 }

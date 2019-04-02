@@ -104,7 +104,7 @@ public class Board {
         return neighbors;
     }
 
-    List<Cell> getNeighboringCells(Cell cell) {
+    public List<Cell> getNeighboringCells(Cell cell) {
         return cell.getNeighbors();
     }
 
@@ -188,7 +188,7 @@ public class Board {
         cell.setUnflagged();
     }
 
-    boolean cellIsClicked(Cell cell) {
+    public boolean cellIsClicked(Cell cell) {
         return cell.isClicked();
     }
 
@@ -200,11 +200,11 @@ public class Board {
         return cell.isFlagged();
     }
 
-    int getSize() {
+    public int getSize() {
         return this.size;
     }
 
-    int getNumberOfMines(){
+    public int getNumberOfMines(){
         return numberOfMines;
     }
 
