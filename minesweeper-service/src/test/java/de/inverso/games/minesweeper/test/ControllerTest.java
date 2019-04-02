@@ -55,8 +55,7 @@ public class ControllerTest {
         assertFalse(response.isWinner());
         response.isAlive();
         response.getMines();
-        response.getClickedCells();
-        response.getNumOfNeighborMines();
+        response.getClickedCellsWithMineCount();
         response.isOkay();
     }
 }

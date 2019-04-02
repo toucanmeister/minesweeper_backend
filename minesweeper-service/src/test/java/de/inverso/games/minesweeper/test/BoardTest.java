@@ -8,7 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Ignore
 public class BoardTest {
-/*
+    /*
+
     private Board board;
 
     @Test

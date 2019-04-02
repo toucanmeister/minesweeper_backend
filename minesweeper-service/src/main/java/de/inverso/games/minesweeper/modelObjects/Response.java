@@ -8,8 +8,7 @@ public class Response {
 
     private boolean alive;
     private boolean winner;
-    private int[] numOfNeighborMines;
-    private int[] clickedCells;
+    private int[][] clickedCellsWithMineCount;
     private int[] mines;
     private boolean okay;
 
@@ -32,17 +31,16 @@ public class Response {
     }
 
     private void setNumOfNeighborMines(Board board) {
-        //TODO: clickedCells enough ???
-        numOfNeighborMines = new int[clickedCells.length];
-        for(int i=0; i < clickedCells.length; i++){
-            numOfNeighborMines[i] = board.getNumOfNeighboringMines(board.getCellByNum(clickedCells[i]));
+
+        for(int i = 0; i < clickedCellsWithMineCount[1].length; i++){
+            clickedCellsWithMineCount[1][i] = board.getNumOfNeighboringMines(board.getCellByNum(clickedCellsWithMineCount[0][i]));
         }
     }
 
     private void setClickedCells(List<Integer> clickedCells) {
-        this.clickedCells = new int[clickedCells.size()];
+        this.clickedCellsWithMineCount = new int[2][clickedCells.size()];
         for(int i=0; i < clickedCells.size(); i++){
-            this.clickedCells[i]=clickedCells.get(i);
+            this.clickedCellsWithMineCount[0][i]=clickedCells.get(i);
         }
     }
 
