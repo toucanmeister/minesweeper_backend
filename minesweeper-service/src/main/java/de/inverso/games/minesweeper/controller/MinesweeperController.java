@@ -1,6 +1,7 @@
 package de.inverso.games.minesweeper.controller;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
+import de.inverso.games.minesweeper.modelObjects.Cell;
 import de.inverso.games.minesweeper.modelObjects.Coordinates;
 import de.inverso.games.minesweeper.modelObjects.Response;
 import de.inverso.games.minesweeper.services.BoardService;
@@ -32,59 +33,30 @@ public class MinesweeperController {
 
     @ResponseBody
     @PostMapping(value = "/start", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Board> startMinesweeper(@RequestBody @Valid Board board) {
+    public ResponseEntity<Void> startMinesweeper(@RequestBody @Valid Board board) {
         this.board = board;
         board.initialize();
-        return new ResponseEntity<>(board, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @ResponseBody
-    @RequestMapping(method = POST, value = "/click", produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/click", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> clickAndSendResult(@RequestBody @Valid Coordinates coordinates) {
-        boolean requestOkay = tryToClick(coordinates.getCellNum());
         Response response;
         List<Integer> clickedCells;
 
-        if(requestOkay) {
-            clickedCells = boardService.clickOnCell(board, coordinates.getCellNum());
-            response = new Response(board, clickedCells, requestOkay);
-        } else {
-            response = new Response(board, requestOkay);
-        }
+        clickedCells = boardService.clickOnCell(board, board.getCellByNum(coordinates.getCellNum()));
+        response = new Response(board, clickedCells, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ResponseBody
-    @RequestMapping(method = POST, value = "/flagChange", produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/flagChange", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> flagCell(@RequestBody @Valid Coordinates coordinates) {
-        boolean requestOkay = tryToFlag(coordinates.getCellNum());
         Response response;
 
-        if(requestOkay) {
-            boardService.flagChange(board, coordinates.getCellNum());
-            response = new Response(board, requestOkay);
-        } else {
-            response = new Response(board, requestOkay);
-        }
+        boardService.flagChange(board, board.getCellByNum(coordinates.getCellNum()));
+        response = new Response(board, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    private boolean tryToClick(int cellNum) {
-        try {
-            board.checkCellRange(cellNum);
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            return false;
-        }
-    }
-
-    private boolean tryToFlag(int cellNum) {
-        try {
-            board.checkCellRange(cellNum);
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            return false;
-        }
-    }
-
 }

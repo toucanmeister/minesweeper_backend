@@ -47,8 +47,8 @@ public class Board {
         for(int cellNum=0; cellNum < getSize(); cellNum++){
             cells[cellNum] = new Cell(cellNum, createCellCoordinates(cellNum));
         }
-        for(int cellNum = 0; cellNum < getSize(); cellNum++) {
-            cells[cellNum].addNeighbors(createNeighboringCellsList(cellNum));
+        for(Cell cell :cells) {
+            cell.addNeighbors(createNeighboringCellsList(cell));
         }
     }
 
@@ -59,7 +59,7 @@ public class Board {
             cellWithoutMineFound = false;
             while(!cellWithoutMineFound) {
                 int chosenCell = ThreadLocalRandom.current().nextInt(0, getSize());
-                if( !(cellIsAMine(chosenCell))) {
+                if( !(cellIsAMine(getCellByNum(chosenCell)))) {
                     cells[chosenCell].setMine(true);
                     cellWithoutMineFound = true;
                 }
@@ -67,13 +67,13 @@ public class Board {
         }
     }
 
-    int getNumOfNeighboringMines(int cellNum) {
+    int getNumOfNeighboringMines(Cell cell) {
 
         int mineCounter = 0;
-        List<Integer> neighbors = getNeighboringCells(cellNum);
+        List<Cell> neighbors = getNeighboringCells(cell);
 
-        for(int neighbor: neighbors){
-            if(cellIsAMine(neighbor)) {
+        for(Cell neighbor: neighbors){
+            if(neighbor.isMine()) {
                 mineCounter++;
             }
         }
@@ -81,28 +81,31 @@ public class Board {
         return mineCounter;
     }
 
-    private List<Integer> createNeighboringCellsList(int cellNum) {
+    private List<Cell> createNeighboringCellsList(Cell cell) {
 
-        int[] originCoordinates = getCellCoordinates(cellNum);
+        int[] originCoordinates = cell.getCellCoordinates();
         int originRow = originCoordinates[0];
         int originColumn = originCoordinates[1];
-        List<Integer> neighbors = new ArrayList<>();
+        List<Cell> neighbors = new ArrayList<>();
 
         for (int row = originRow - 1; row <= originRow + 1; row++) {
             for (int column = originColumn - 1; column <= originColumn + 1; column++) {
 
-                if (!(row == originRow && column == originColumn)) {
-                    if (coordinatesAreOnBoard(row, column)) {
-                        neighbors.add(getCellByCoordinates(row, column));
-                    }
+                // do not take self
+                if (row == originRow && column == originColumn) {
+                    continue;
+                }
+
+                if (coordinatesAreOnBoard(row, column)) {
+                    neighbors.add(getCellByCoordinates(row, column));
                 }
             }
         }
         return neighbors;
     }
 
-    public List<Integer> getNeighboringCells(int cellNum) {
-        return cells[cellNum].getNeighbors();
+    List<Cell> getNeighboringCells(Cell cell) {
+        return cell.getNeighbors();
     }
 
     private boolean coordinatesAreOnBoard(int row, int column) {
@@ -131,11 +134,11 @@ public class Board {
         return cells[cellNum].getCellCoordinates();
     }
 
-    public int getCellByCoordinates(int row, int column) throws IndexOutOfBoundsException{
+    public Cell getCellByCoordinates(int row, int column) throws IndexOutOfBoundsException{
 
-        for(int x=0; x < size; x++) {
-            if(Arrays.equals(cells[x].getCellCoordinates(), new int[]{row, column})){
-                return x;
+        for(Cell cell : cells) {
+            if(Arrays.equals(cell.getCellCoordinates(), new int[]{row, column})){
+                return cell;
             }
         }
         throw new IndexOutOfBoundsException();
@@ -163,13 +166,6 @@ public class Board {
         return clickedCells == size - numberOfMines;
     }
 
-    public void checkCellRange(int cellNum) throws IndexOutOfBoundsException{
-
-        if ((cellNum < 0) || (cellNum >= getSize())){
-            throw new IndexOutOfBoundsException("Cell is out of range of the Board.");
-        }
-    }
-
     public List<Integer> getClickedCells(){
         List<Integer> clickedCells = new ArrayList<>();
         for(Cell cell: cells){
@@ -180,35 +176,35 @@ public class Board {
         return clickedCells;
     }
 
-    void setCellToClicked(int cellNum) {
-        cells[cellNum].setClicked();
+    void setCellToClicked(Cell cell) {
+        cell.setClicked();
     }
 
-    public void setCellToFlagged(int cellNum) {
-        cells[cellNum].setFlagged();
+    public void setCellToFlagged(Cell cell) {
+        cell.setFlagged();
     }
 
-    public void setFlaggedCellToUnflagged(int cellNum) {
-        cells[cellNum].setUnflagged();
+    public void setFlaggedCellToUnflagged(Cell cell) {
+        cell.setUnflagged();
     }
 
-    public boolean cellIsClicked(int cellNum) {
-        return cells[cellNum].isClicked();
+    boolean cellIsClicked(Cell cell) {
+        return cell.isClicked();
     }
 
-    public boolean cellIsAMine(int cellNum) {
-        return cells[cellNum].isMine();
+    public boolean cellIsAMine(Cell cell) {
+        return cell.isMine();
     }
 
-    public boolean cellIsFlagged(int cellNum) {
-        return cells[cellNum].isFlagged();
+    public boolean cellIsFlagged(Cell cell) {
+        return cell.isFlagged();
     }
 
-    public int getSize() {
+    int getSize() {
         return this.size;
     }
 
-    public int getNumberOfMines(){
+    int getNumberOfMines(){
         return numberOfMines;
     }
 
@@ -218,5 +214,15 @@ public class Board {
 
     public void setNumberOfMines(int numberOfMines){
         this.numberOfMines = numberOfMines;
+    }
+
+    public Cell getCellByNum(int cellNum) {
+        for(Cell cell : cells) {
+            if (cell.getCellNum() == cellNum) {
+                return cell;
+            }
+        }
+
+        throw new IndexOutOfBoundsException("No Cell found with cellnum " + cellNum);
     }
 }

@@ -1,18 +1,17 @@
 package de.inverso.games.minesweeper.modelObjects;
 
+import de.inverso.games.minesweeper.enums.CellStatus;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-class Cell {
-
-    enum CellStatus {CLICKED, FLAGGED, UNCLICKED}
+public class Cell {
     private CellStatus status;
     private boolean isMine;
     private int cellNum;
     private int[] cellCoordinates;
-    private List<Integer> neighbors;
+    private List<Cell> neighbors;
 
      Cell(int cellNum, int[] cellCoordinates) {
         this.cellNum = cellNum;
@@ -21,7 +20,7 @@ class Cell {
         isMine = false;
     }
 
-    void addNeighbors(List <Integer> neighbors){
+    void addNeighbors(List<Cell> neighbors){
          this.neighbors = neighbors;
     }
 

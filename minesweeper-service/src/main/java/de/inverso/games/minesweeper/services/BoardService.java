@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
+import de.inverso.games.minesweeper.modelObjects.Cell;
 import de.inverso.games.minesweeper.modelObjects.RecursiveClicker;
 import org.springframework.stereotype.Service;
 
@@ -13,35 +14,35 @@ public class BoardService {
     public BoardService(){
     }
 
-    public List<Integer> clickOnCell(Board board, int cellNum) {
+    public List<Integer> clickOnCell(Board board, Cell cell) {
 
-        if (!board.cellIsFlagged(cellNum)) {
-            return clickAndCheckWin(board, cellNum);
+        if (!board.cellIsFlagged(cell)) {
+            return clickAndCheckWin(board, cell);
         } else {
             return new ArrayList<>();
         }
     }
 
-    private List<Integer> clickAndCheckWin(Board board, int cellNum) {
+    private List<Integer> clickAndCheckWin(Board board, Cell cell) {
 
-        if (board.cellIsAMine(cellNum)) {
+        if (board.cellIsAMine(cell)) {
             board.setPlayerAlive(false);
             return new ArrayList<>();
         } else {
             RecursiveClicker Clicker = new RecursiveClicker(board);
-            Clicker.recursiveClick(cellNum);
+            Clicker.recursiveClick(cell);
             checkIfPlayerWins(board);
             return board.getClickedCells();
         }
     }
 
-    public void flagChange(Board board, int cellNum){
+    public void flagChange(Board board, Cell cell){
 
-        if(board.cellIsFlagged(cellNum)) {
-            board.setFlaggedCellToUnflagged(cellNum);
+        if(board.cellIsFlagged(cell)) {
+            board.setFlaggedCellToUnflagged(cell);
             checkIfPlayerWins(board);
         } else {
-            board.setCellToFlagged(cellNum);
+            board.setCellToFlagged(cell);
             checkIfPlayerWins(board);
         }
     }

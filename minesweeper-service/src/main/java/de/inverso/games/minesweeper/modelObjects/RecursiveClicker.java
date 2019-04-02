@@ -10,16 +10,16 @@ public class RecursiveClicker {
         this.board = board;
     }
 
-    public void recursiveClick(int cellNum) {
+    public void recursiveClick(Cell cell) {
 
-        if( !(board.cellIsClicked(cellNum))) {
-            board.setCellToClicked(cellNum);
+        if( !(board.cellIsClicked(cell))) {
+            board.setCellToClicked(cell);
 
-            if (board.getNumOfNeighboringMines(cellNum) == 0) {
+            if (board.getNumOfNeighboringMines(cell) == 0) {
 
-                List<Integer> neighbors = board.getNeighboringCells(cellNum);
+                List<Cell> neighbors = board.getNeighboringCells(cell);
 
-                for(int neighbor: neighbors){
+                for(Cell neighbor: neighbors){
                     recursiveClick(neighbor);
                 }
             }

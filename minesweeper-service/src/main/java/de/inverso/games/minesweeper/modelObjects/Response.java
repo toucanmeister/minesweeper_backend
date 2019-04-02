@@ -32,9 +32,10 @@ public class Response {
     }
 
     private void setNumOfNeighborMines(Board board) {
+        //TODO: clickedCells enough ???
         numOfNeighborMines = new int[clickedCells.length];
         for(int i=0; i < clickedCells.length; i++){
-            numOfNeighborMines[i] = board.getNumOfNeighboringMines(clickedCells[i]);
+            numOfNeighborMines[i] = board.getNumOfNeighboringMines(board.getCellByNum(clickedCells[i]));
         }
     }
 
@@ -48,9 +49,9 @@ public class Response {
     private void setMinesFromBoard(Board board){
         mines = new int[board.getNumberOfMines()];
         int mineNumber = 0;
-        for(int cell=0; cell < board.getSize(); cell++){
-            if(board.cellIsAMine(cell)){
-                mines[mineNumber] = cell;
+        for(int cellNum=0; cellNum < board.getSize(); cellNum++){
+            if(board.cellIsAMine(board.getCellByNum(cellNum))){
+                mines[mineNumber] = cellNum;
                 mineNumber++;
             }
         }
