@@ -3,16 +3,23 @@ package de.inverso.games.minesweeper.test;
 import de.inverso.games.minesweeper.modelObjects.Board;
 import de.inverso.games.minesweeper.modelObjects.Cell;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BoardTest {
+class BoardTest {
 
     private Board board;
 
     @Test
-    public void cellsAreAllUnclicked() {
+    void sizeIsCorrect() {
+        board = new Board(8, 10);
+        assertEquals(board.getSize(), 64);
+        int count = 0;
+        assertEquals(board.getCells().length, 64);
+    }
+
+    @Test
+    void cellsAreAllUnclicked() {
         board = new Board(8, 10);
         int clickedCells = 0;
 
@@ -25,7 +32,7 @@ public class BoardTest {
     }
 
     @Test
-    public void numberOfPlacedMinesIsEqualToVariable() {
+    void numberOfPlacedMinesIsEqualToVariable() {
         board = new Board(8, 10);
         int minesOnBoard = 0;
 
@@ -38,7 +45,7 @@ public class BoardTest {
     }
 
     @Test
-    public void flaggingCellMakesItFlagged() {
+    void flaggingCellMakesItFlagged() {
         board = new Board(8, 10);
 
         board.setCellToFlagged(board.getCellByNum(44));
@@ -46,7 +53,7 @@ public class BoardTest {
     }
 
     @Test
-    public void unflaggingFlaggedCellMakesItUnclicked(){
+    void unflaggingFlaggedCellMakesItUnclicked(){
         board = new Board(8, 10);
 
         board.setCellToFlagged(board.getCellByNum(33));
@@ -55,7 +62,7 @@ public class BoardTest {
     }
 
     @Test
-    public void cellCoordinatesGivesCorrectCell(){
+    void cellCoordinatesGivesCorrectCell(){
         board = new Board(8, 10);
 
         assertArrayEquals(new int[]{0, 0}, (board.getCellCoordinates(0)));
@@ -64,7 +71,7 @@ public class BoardTest {
     }
 
     @Test
-    public void getCellByCoordinatesCorrect(){
+    void getCellByCoordinatesCorrect(){
         board = new Board(8, 10);
 
         assertEquals(0, board.getCellByCoordinates(0,0).getCellNum());
@@ -73,7 +80,7 @@ public class BoardTest {
     }
 
     @Test
-    public void getNeighboringCellsCorrect(){
+    void getNeighboringCellsCorrect(){
         board = new Board(8, 10);
 
         assertArrayEquals(new Integer[]{1, 8, 9}, board.getNeighboringCells(board.getCellByNum(0))

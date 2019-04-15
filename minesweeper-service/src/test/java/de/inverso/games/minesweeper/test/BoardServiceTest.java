@@ -6,27 +6,27 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BoardServiceTest {
+class BoardServiceTest {
 
     private Board board;
     private BoardService boardService;
 
     @Test
-    public void playerIsAlive(){
+    void playerIsAlive(){
         board = new Board(7, 10);
 
         assertTrue(board.isPlayerAlive());
     }
 
     @Test
-    public void playerIsNotWinner(){
+    void playerIsNotWinner(){
         board = new Board(7, 10);
 
         assertFalse(board.isPlayerWinner());
     }
 
     @Test
-    public void cellClickMakesCellClickedOrKillsPlayer() {
+    void cellClickMakesCellClickedOrKillsPlayer() {
         board = new Board(7, 10);
         boardService = new BoardService();
 
@@ -40,7 +40,7 @@ public class BoardServiceTest {
     }
 
     @Test
-    public void playerWinsIfMinesAreFlaggedAndCellsClicked(){
+    void playerWinsIfMinesAreFlaggedAndCellsClicked(){
         board = new Board(7, 10);
         boardService = new BoardService();
 

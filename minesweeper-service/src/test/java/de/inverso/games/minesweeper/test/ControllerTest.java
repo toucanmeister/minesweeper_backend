@@ -3,7 +3,7 @@ package de.inverso.games.minesweeper.test;
 import de.inverso.games.minesweeper.modelObjects.Board;
 import de.inverso.games.minesweeper.services.BoardService;
 import de.inverso.games.minesweeper.controller.MinesweeperController;
-import de.inverso.games.minesweeper.modelObjects.chosenCellNum;
+import de.inverso.games.minesweeper.modelObjects.ChosenCellNum;
 import de.inverso.games.minesweeper.modelObjects.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
 
-public class ControllerTest {
+class ControllerTest {
 
     @Test
-    public void startShouldInitializeBoardAndPlayer() {
+    void startShouldInitializeBoardAndPlayer() {
         Board board = new Board();
         board.setNumberOfRows(8);
         board.setNumberOfMines(10);
@@ -39,7 +39,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void clickingResponseShouldBeOkay() {
+    void clickingResponseShouldBeOkay() {
         Board board = new Board();
         board.setNumberOfRows(8);
         board.setNumberOfMines(10);
@@ -47,7 +47,7 @@ public class ControllerTest {
         MinesweeperController controller = new MinesweeperController(new BoardService());
         controller.startMinesweeper(board);
 
-        chosenCellNum targetCell = new chosenCellNum();
+        ChosenCellNum targetCell = new ChosenCellNum();
         targetCell.setCellNum(5);
         ResponseEntity<Response> responseEntity = controller.clickAndSendResult(targetCell);
         Response response = responseEntity.getBody();

@@ -1,7 +1,7 @@
 package de.inverso.games.minesweeper.controller;
 
 import de.inverso.games.minesweeper.modelObjects.Board;
-import de.inverso.games.minesweeper.modelObjects.chosenCellNum;
+import de.inverso.games.minesweeper.modelObjects.ChosenCellNum;
 import de.inverso.games.minesweeper.modelObjects.Response;
 import de.inverso.games.minesweeper.services.BoardService;
 import org.springframework.http.HttpStatus;
@@ -49,7 +49,7 @@ public class MinesweeperController {
      */
     @ResponseBody
     @PostMapping(value = "/click", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> clickAndSendResult(@RequestBody @Valid chosenCellNum chosenCellNum) {
+    public ResponseEntity<Response> clickAndSendResult(@RequestBody @Valid ChosenCellNum chosenCellNum) {
         Response response;
         List<Integer> clickedCells;
 
@@ -65,7 +65,7 @@ public class MinesweeperController {
      */
     @ResponseBody
     @PostMapping(value = "/flagChange", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> flagCell(@RequestBody @Valid chosenCellNum chosenCellNum) {
+    public ResponseEntity<Response> flagCell(@RequestBody @Valid ChosenCellNum chosenCellNum) {
         Response response;
 
         boardService.flagChange(board, board.getCellByNum(chosenCellNum.getCellNum()));
